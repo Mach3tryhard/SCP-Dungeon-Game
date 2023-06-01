@@ -13,8 +13,8 @@ public class RoomSpawner : MonoBehaviour
 
     void Start() 
     {
-        ClosedRoom = Resources.Load("ClosedRoom") as GameObject;
         templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
+        ClosedRoom = templates.closedRoom;
         Invoke("Spawn", 0.1f);
     }
 
@@ -50,10 +50,14 @@ public class RoomSpawner : MonoBehaviour
     {
         if(other.CompareTag("SpawnPoint"))
         {
-            if(other.GetComponent<RoomSpawner>().spawned==false)
+            if(other.GetComponent<RoomSpawner>().spawned==false && spawned==false)
             {
-                Instantiate(ClosedRoom, transform.position, Quaternion.identity);
+                Instantiate(templates.closedRoom, transform.position, Quaternion.identity);   
                 Destroy(gameObject);
+            }
+            else
+            {
+                
             }
             spawned=true;
         }
