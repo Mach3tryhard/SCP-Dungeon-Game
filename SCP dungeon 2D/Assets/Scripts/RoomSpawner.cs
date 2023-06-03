@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class RoomSpawner : MonoBehaviour
 {
-    public int openingDirection;
-
+    public int RoomRestriction;
     private RoomTemplates templates;
     private GameObject ClosedRoom;
     private int random;
@@ -15,51 +14,50 @@ public class RoomSpawner : MonoBehaviour
     {
         templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
         ClosedRoom = templates.closedRoom;
-        Invoke("Spawn", 0.1f);
+        //Invoke("Spawn", 0.5f);
+    }
+
+    void Update ()
+    {
+        if (templates.DONE==true && spawned==false)
+            Invoke("Spawn", 0.5f);
+        if (spawned == true)
+            Destroy(gameObject);
     }
 
     void Spawn() 
     {
-        if(spawned == false)
-        {
-            if(openingDirection==1)
-            {
-                random = Random.Range(0 , templates.bottomRooms.Length);
-                Instantiate(templates.bottomRooms[random],transform.position , templates.bottomRooms[random].transform.rotation);
-            }
-            if(openingDirection==2)
-            {
-                random = Random.Range(0 , templates.topRooms.Length);
-                Instantiate(templates.topRooms[random],transform.position , templates.topRooms[random].transform.rotation);
-            }
-            if(openingDirection==3)
-            {
-                random = Random.Range(0 , templates.leftRooms.Length);
-                Instantiate(templates.leftRooms[random],transform.position , templates.leftRooms[random].transform.rotation);
-            }
-            if(openingDirection==4)
-            {
-                random = Random.Range(0 , templates.rightRooms.Length);
-                Instantiate(templates.rightRooms[random],transform.position , templates.rightRooms[random].transform.rotation);
-            }
-            spawned=true;
-        }
+        if (spawned == true)
+            return;
+        int cr = RoomRestriction;
+        for (int i = 1; i < 81; i*= 3)
+            if ((cr / i) % 3 != 0)
+                cr -= i;
+        if (cr == 0)
+            return;
+        spawned = true;
+        GameObject[] array = templates.complicated[RoomRestriction];
+        random = Random.Range(0, Random.Range(1, array.Length + 1));
+        //random = Random.Range(0,array.Length);
+        GameObject newfab = Instantiate(array[random], transform.position, array[random].transform.rotation);
+        newfab.transform.Find("Destroyer").gameObject.GetComponent<Destroyer>().spawnval = RoomRestriction;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("SpawnPoint"))
-        {
-            if(other.GetComponent<RoomSpawner>().spawned==false && spawned==false)
+        lock(templates){
+            if(other.GetComponent<Destroyer>() != null)
             {
-                Instantiate(templates.closedRoom, transform.position, Quaternion.identity);   
-                Destroy(gameObject);
-            }
-            else
+                spawned = true;
+                Debug.Log("CACA");
+            }    
+            if(spawned == false && other.GetComponent<RoomSpawner>().spawned==false)
             {
-                
+                Debug.Log(""+other.GetComponent<RoomSpawner>().RoomRestriction+"+"+RoomRestriction);
+                other.GetComponent<RoomSpawner>().RoomRestriction += RoomRestriction;
+                spawned = true;
             }
-            spawned=true;
         }
     }
 }
