@@ -50,11 +50,11 @@ public class RoomSpawner : MonoBehaviour
             if(other.GetComponent<Destroyer>() != null)
             {
                 spawned = true;
-                Debug.Log("CACA");
+                //Debug.Log("CACA");
             }    
             if(spawned == false && other.GetComponent<RoomSpawner>().spawned==false)
             {
-                Debug.Log(""+other.GetComponent<RoomSpawner>().RoomRestriction+"+"+RoomRestriction);
+                //Debug.Log(""+other.GetComponent<RoomSpawner>().RoomRestriction+"+"+RoomRestriction);
                 other.GetComponent<RoomSpawner>().RoomRestriction += RoomRestriction;
                 spawned = true;
             }

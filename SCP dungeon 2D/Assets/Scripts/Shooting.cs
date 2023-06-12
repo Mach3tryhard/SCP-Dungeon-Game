@@ -9,13 +9,23 @@ public class Shooting : MonoBehaviour
     public GameObject bulletPrefab;
 
     public float bulletForce = 3f;
+    public float ShootDelay = 0.05f;
+
+    private float lastTime, currentTime;
+
+    void Start() 
+    {
+        lastTime = Time.time - ShootDelay;
+        currentTime = Time.time;
+    }
 
     void FixedUpdate()
     {
-        if(Input.GetButton("Fire1"))
+        currentTime += Time.deltaTime;
+        if(Input.GetButton("Fire1") && currentTime > lastTime + ShootDelay)
         {
+            lastTime = currentTime;
             Shoot();
-            StartCoroutine(waiter());
         }
     }
 
@@ -29,12 +39,5 @@ public class Shooting : MonoBehaviour
         rb.AddForce(firePoint.right * bulletForce, ForceMode2D.Impulse);
 
         firePoint.eulerAngles -= new Vector3(0f,0f,caca);
-        StartCoroutine(waiter());
     }
-
-    IEnumerator waiter()
-    {
-        yield return new WaitForSecondsRealtime(1);
-    }
-
 }

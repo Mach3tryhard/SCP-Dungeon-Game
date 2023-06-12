@@ -25,7 +25,6 @@ public class GunRotate : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
-    
 
     void Update()
     {   

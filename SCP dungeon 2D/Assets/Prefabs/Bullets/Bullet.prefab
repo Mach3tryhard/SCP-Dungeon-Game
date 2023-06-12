@@ -122,9 +122,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00720644, y: -0.004238844}
+  m_Offset: {x: 0.008597255, y: -0.004238844}
   serializedVersion: 2
-  m_Radius: 0.072659254
+  m_Radius: 0.07405007
 --- !u!114 &1096736291801893890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,7 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30afa88f238cec40a42e78d2bdb9d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
   ExplosionPrefab: {fileID: 5049346674797548192, guid: 119a2c91952b1a043bb671aac70fc069, type: 3}
+  playerScript: {fileID: 0}
 --- !u!95 &2228600368652301939
 Animator:
   serializedVersion: 4
